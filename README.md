@@ -1,31 +1,31 @@
-# Домашнее задание по курсу "DevOps"
+## Домашнее задание по курсу "DevOps"
 
 
 
-#2.1  Системы контроля версий
+##2.1  Системы контроля версий
 
-# Исключения в Teraform.gitignore
+## Исключения в Teraform.gitignore
 
-#	1.Исключение скрытых папок ".teraform"
+	1.Исключение скрытых папок ".teraform"
 
-#	2.Файлы расширения ".tfstate" и файлов в названии которых есть ".tfstate."
+	2.Файлы расширения ".tfstate" и файлов в названии которых есть ".tfstate."
 
-#	3.Файлов crash.log
+	3.Файлов crash.log
 
-#	4.Файлов с расширением *.tfvars
+	4.Файлов с расширением *.tfvars
 
-#	5.Файлов:
+	5.Файлов:
 
- #override.tf
+ override.tf
 
-#override.tf.json
+override.tf.json
 
-#*_override.tf
+*_override.tf
 
-#*_override.tf.json
+*_override.tf.json
 
-#	6.Также игнорировать файлы:
+	6.Также игнорировать файлы:
 
-#.terraformrc
+.terraformrc
 
-#terraform.rc 
+terraform.rc 
