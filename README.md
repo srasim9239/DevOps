@@ -26,6 +26,7 @@
 ![Снимок экрана от 2021-12-29 18-57-07](https://user-images.githubusercontent.com/26147777/147680647-535ff398-7ace-4d29-95e2-78278e791f4b.png)
 
 7.Команда vagrant ssh
+
 ![Снимок экрана от 2021-12-29 18-59-51](https://user-images.githubusercontent.com/26147777/147680813-b33f542b-e3d6-4288-a7e5-c8e4267c0e96.png)
 
 8.Ознакомиться с разделами man bash
