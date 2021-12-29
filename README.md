@@ -3,7 +3,8 @@
 
 
 1.Установите средство виртуализации Oracle VirtualBox.
-![Снимок экрана от 2021-12-29 18-34-33](https://user-images.githubusercontent.com/26147777/147678367-eced5112-4378-4f53-a402-bd6f21eb5bf9.png
+![Снимок экрана от 2021-12-29 18-34-33](https://user-images.githubusercontent.com/26147777/147685095-fbacaa2c-4cf9-4c27-9f95-ab1a6421e36a.png)
+
 
 2.Установите средство автоматизации Hashicorp Vagrant.
 ![Снимок экрана от 2021-12-29 18-42-11](https://user-images.githubusercontent.com/26147777/147679101-e1c32cc5-844a-4b96-b1fd-acf996ba4c51.png)
@@ -20,6 +21,7 @@
 
 6.Как добавить оперативной памяти или ресурсов процессора виртуальной машине?
 Редактируется файл конфигураци созданный ранее
+
 ![Снимок экрана от 2021-12-29 18-57-07](https://user-images.githubusercontent.com/26147777/147680647-535ff398-7ace-4d29-95e2-78278e791f4b.png)
 
 7.Команда vagrant ssh
