@@ -9,8 +9,8 @@
     удостоверьтесь, что с помощью systemctl процесс корректно стартует, завершается, а после перезагрузки автоматически поднимается.
   
 Ответ:  
+![Снимок экрана от 2022-01-25 17-18-41](https://user-images.githubusercontent.com/26147777/151385011-cb02a689-bf6a-4bf3-8d3c-7be1465aee5d.png)
 
-![](../Изображения/Снимок экрана от 2022-01-25 17-18-41.png)
 Сервис стартует и перезапускается корректно
 
 1.Проверка после перезапуска работы процесса
@@ -20,42 +20,42 @@
 5. Проверка работы процесса
  
 vagrant@vagrant:~$ ps -e |grep node_exporter   
-   1375 ?        00:00:00 node_exporter
-vagrant@vagrant:~$ systemctl stop node_exporter
-==== AUTHENTICATING FOR org.freedesktop.systemd1.manage-units ===
-Authentication is required to stop 'node_exporter.service'.
-Authenticating as: vagrant,,, (vagrant)
-Password: 
-==== AUTHENTICATION COMPLETE ===
-vagrant@vagrant:~$ ps -e |grep node_exporter
-vagrant@vagrant:~$ systemctl start node_exporter
-==== AUTHENTICATING FOR org.freedesktop.systemd1.manage-units ===
-Authentication is required to start 'node_exporter.service'.
-Authenticating as: vagrant,,, (vagrant)
-Password: 
-==== AUTHENTICATION COMPLETE ===
-vagrant@vagrant:~$ ps -e |grep node_exporter
-   1420 ?        00:00:00 node_exporter
-vagrant@vagrant:~$ 
+   1375 ?        00:00:00 node_exporter  
+vagrant@vagrant:~$ systemctl stop node_exporter  
+==== AUTHENTICATING FOR org.freedesktop.systemd1.manage-units ===  
+Authentication is required to stop 'node_exporter.service'.  
+Authenticating as: vagrant,,, (vagrant)  
+Password:   
+==== AUTHENTICATION COMPLETE ===  
+vagrant@vagrant:~$ ps -e |grep node_exporter  
+vagrant@vagrant:~$ systemctl start node_exporter  
+==== AUTHENTICATING FOR org.freedesktop.systemd1.manage-units ===  
+Authentication is required to start 'node_exporter.service'.  
+Authenticating as: vagrant,,, (vagrant)  
+Password:   
+==== AUTHENTICATION COMPLETE ===  
+vagrant@vagrant:~$ ps -e |grep node_exporter  
+   1420 ?        00:00:00 node_exporter  
+vagrant@vagrant:~$   
 
 
 
-Прописан конфигруационный файл:
+Прописан конфигруационный файл:  
 
-vagrant@vagrant:/etc/systemd/system$ cat /etc/systemd/system/node_exporter.service
-[Unit]
-Description=Node Exporter
+vagrant@vagrant:/etc/systemd/system$ cat /etc/systemd/system/node_exporter.service  
+[Unit]  
+Description=Node Exporter  
+  
+[Service]  
+ExecStart=/opt/node_exporter/node_exporter  
+EnvironmentFile=/etc/default/node_exporter  
  
-[Service]
-ExecStart=/opt/node_exporter/node_exporter
-EnvironmentFile=/etc/default/node_exporter
- 
-[Install]
-WantedBy=default.target
+[Install]  
+WantedBy=default.target  
 
 
 
-при перезапуске переменная окружения выставляется :
+при перезапуске переменная окружения выставляется :  
 
 agrant@vagrant:/etc/systemd/system$ sudo cat /proc/1809/environ
 LANG=en_US.UTF-8LANGUAGE=en_US:PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin
@@ -95,7 +95,8 @@ config.vm.network "forwarded_port", guest: 19999, host: 19999
 
 После успешной перезагрузки в браузере на своем ПК (не в виртуальной машине) вы должны суметь зайти на localhost:19999. Ознакомьтесь с метриками, которые по умолчанию собираются Netdata и с комментариями, которые даны к этим метрикам.  
 Ответ:  
-![](../Изображения/Снимок экрана от 2022-01-25 17-44-58.png)
+![Снимок экрана от 2022-01-25 17-44-58](https://user-images.githubusercontent.com/26147777/151385299-db90f454-33a5-4940-ad67-96ba04e888de.png)
+
 4. Можно ли по выводу dmesg понять, осознает ли ОС, что загружена не на настоящем оборудовании, а на системе виртуализации?  
 Ответ:  
 Судя по выводу dmesg да, причем даже тип ВМ, так как есть соответсвующая строка: 
