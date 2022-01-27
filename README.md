@@ -1,68 +1,156 @@
 ## Домашнее задание по курсу "DevOps"
-Домашнее задание к занятию "3.3. Операционные системы, лекция 1"
+Домашнее задание к занятию "3.4. Операционные системы, лекция 2"
 
 
-1. Какой системный вызов делает команда cd? В прошлом ДЗ мы выяснили, что cd не является самостоятельной программой, это shell builtin, поэтому запустить strace непосредственно на cd не получится. Тем не менее, вы можете запустить strace на /bin/bash -c 'cd /tmp'. В этом случае вы увидите полный список системных вызовов, которые делает сам bash при старте. Вам нужно найти тот единственный, который относится именно к cd.  
-Ответ:  
-системный вызов команды CD -> chdir("/tmp")
-2. Попробуйте использовать команду file на объекты разных типов на файловой системе. Например:
-Используя strace выясните, где находится база данных file на основании которой она делает свои догадки.  
-Ответ:  
-openat(AT_FDCWD, "/usr/share/misc/magic.mgc", O_RDONLY) = 3
-3. Предположим, приложение пишет лог в текстовый файл. Этот файл оказался удален (deleted в lsof), однако возможности сигналом сказать приложению переоткрыть файлы или просто перезапустить приложение – нет. Так как приложение продолжает писать в удаленный файл, место на диске постепенно заканчивается. Основываясь на знаниях о перенаправлении потоков предложите способ обнуления открытого удаленного файла (чтобы освободить место на файловой системе).  
-Ответ:  
-Надо отправить пустоту в файл, echo '' >/proc/PID/fd/descripter
-4. Занимают ли зомби-процессы какие-то ресурсы в ОС (CPU, RAM, IO)?  
-Ответ:  
-"Зомби" процессы, в отличии от "сирот" освобождают свои ресурсы, но не освобождают запись в таблице процессов. 
-запись освободиться при вызове wait() родительским процессом. 
-5. В iovisor BCC есть утилита opensnoop:  
-root@vagrant:~# dpkg -L bpfcc-tools | grep sbin/opensnoop  
-/usr/sbin/opensnoop-bpfcc  
-На какие файлы вы увидели вызовы группы open за первую секунду работы утилиты? Воспользуйтесь пакетом bpfcc-tools для Ubuntu 20.04. Дополнительные сведения по установке.  
-Ответ:  
-root@vagrant:~# dpkg -L bpfcc-tools | grep sbin/opensnoop  
-/usr/sbin/opensnoop-bpfcc  
-root@vagrant:~# /usr/sbin/opensnoop-bpfcc  
-PID    COMM               FD ERR PATH  
-766    vminfo              6   0 /var/run/utmp  
-562    dbus-daemon        -1   2 /usr/local/share/dbus-1/system-services  
-562    dbus-daemon        18   0 /usr/share/dbus-1/system-services  
-562    dbus-daemon        -1   2 /lib/dbus-1/system-services  
-562    dbus-daemon        18   0 /var/lib/snapd/dbus-1/system-services/  
+1. На лекции мы познакомились с node_exporter. В демонстрации его исполняемый файл запускался в background. Этого достаточно для демо, но не для настоящей production-системы, где процессы должны находиться под внешним управлением. Используя знания из лекции по systemd, создайте самостоятельно простой unit-файл для node_exporter:
 
-6. Какой системный вызов использует uname -a? Приведите цитату из man по этому системному вызову, где описывается альтернативное местоположение в /proc, где можно узнать версию ядра и релиз ОС.  
+    поместите его в автозагрузку,
+    предусмотрите возможность добавления опций к запускаемому процессу через внешний файл (посмотрите, например, на systemctl cat cron),
+    удостоверьтесь, что с помощью systemctl процесс корректно стартует, завершается, а после перезагрузки автоматически поднимается.
+  
 Ответ:  
-системный вызов uname()  
-Цитата :  
-     Part of the utsname information is also accessible  via  /proc/sys/ker‐
-       nel/{ostype, hostname, osrelease, version, domainname}.  
-7. Чем отличается последовательность команд через ; и через && в bash? Например:  
-root@netology1:~# test -d /tmp/some_dir; echo Hi  
-Hi  
-root@netology1:~# test -d /tmp/some_dir && echo Hi  
-root@netology1:~#  
-Есть ли смысл использовать в bash &&, если применить set -e?  
-Ответ:
-"&&" - условный оператор;   
-";"  - разделитель последовательных команд;  
-set -e - прерывает сессию при любом ненулевом значении исполняемых команд в конвеере кроме последней.
-&&  вместе с set -e- не имеет смысла, т.кю при ошибке, выполнение команд прекратиться.  
-8. Из каких опций состоит режим bash set -euxo pipefail и почему его хорошо было бы использовать в сценариях?  
-Ответ:  
--e прерывает выполнение исполнения при ошибке любой команды кроме последней в последовательности   
--x вывод трейса простых команд   
--u неустановленные/не заданные параметры и переменные считаются как ошибки, с выводом в stderr текста ошибки и выполнит завершение неинтерактивного вызова  
--o pipefail возвращает код возврата набора/последовательности команд, ненулевой при последней команде или 0 для успешного выполнения команд.  
-То есть, детализация вывода ошибок(логирования), завершение скрипта при наличии ошибки.
-9. Используя -o stat для ps, определите, какой наиболее часто встречающийся статус у процессов в системе. В man ps ознакомьтесь (/PROCESS STATE CODES) что значат дополнительные к основной заглавной буквы статуса процессов. Его можно не учитывать при расчете (считать S, Ss или Ssl равнозначными).  
-Ответ:  
-               R    running or runnable (on run queue)  
-               S    interruptible sleep (waiting for an event to complete)  
 
+![](../Изображения/Снимок экрана от 2022-01-25 17-18-41.png)
+Сервис стартует и перезапускается корректно
 
-
+1.Проверка после перезапуска работы процесса
+2. Остановка
+3. Проверка работы процесса
+4. Запуск процесса 
+5. Проверка работы процесса
  
+vagrant@vagrant:~$ ps -e |grep node_exporter   
+   1375 ?        00:00:00 node_exporter
+vagrant@vagrant:~$ systemctl stop node_exporter
+==== AUTHENTICATING FOR org.freedesktop.systemd1.manage-units ===
+Authentication is required to stop 'node_exporter.service'.
+Authenticating as: vagrant,,, (vagrant)
+Password: 
+==== AUTHENTICATION COMPLETE ===
+vagrant@vagrant:~$ ps -e |grep node_exporter
+vagrant@vagrant:~$ systemctl start node_exporter
+==== AUTHENTICATING FOR org.freedesktop.systemd1.manage-units ===
+Authentication is required to start 'node_exporter.service'.
+Authenticating as: vagrant,,, (vagrant)
+Password: 
+==== AUTHENTICATION COMPLETE ===
+vagrant@vagrant:~$ ps -e |grep node_exporter
+   1420 ?        00:00:00 node_exporter
+vagrant@vagrant:~$ 
 
 
 
+Прописан конфигруационный файл:
+
+vagrant@vagrant:/etc/systemd/system$ cat /etc/systemd/system/node_exporter.service
+[Unit]
+Description=Node Exporter
+ 
+[Service]
+ExecStart=/opt/node_exporter/node_exporter
+EnvironmentFile=/etc/default/node_exporter
+ 
+[Install]
+WantedBy=default.target
+
+
+
+при перезапуске переменная окружения выставляется :
+
+agrant@vagrant:/etc/systemd/system$ sudo cat /proc/1809/environ
+LANG=en_US.UTF-8LANGUAGE=en_US:PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin
+INVOCATION_ID=0fcb24d52895405c875cbb9cbc28d3ffJOURNAL_STREAM=9:35758MYVAR=some_value  
+
+2. Ознакомьтесь с опциями node_exporter и выводом /metrics по-умолчанию. Приведите несколько опций, которые вы бы выбрали для базового мониторинга хоста по CPU, памяти, диску и сети.   
+Ответ:  
+CPU:
+    node_cpu_seconds_total{cpu="0",mode="idle"} 2238.49
+    node_cpu_seconds_total{cpu="0",mode="system"} 16.72
+    node_cpu_seconds_total{cpu="0",mode="user"} 6.86
+    process_cpu_seconds_total
+    
+Memory:
+    node_memory_MemAvailable_bytes 
+    node_memory_MemFree_bytes
+    
+Disk(если несколько дисков то для каждого):
+    node_disk_io_time_seconds_total{device="sda"} 
+    node_disk_read_bytes_total{device="sda"} 
+    node_disk_read_time_seconds_total{device="sda"} 
+    node_disk_write_time_seconds_total{device="sda"}
+    
+Network(так же для каждого активного адаптера):
+    node_network_receive_errs_total{device="eth0"} 
+    node_network_receive_bytes_total{device="eth0"} 
+    node_network_transmit_bytes_total{device="eth0"}
+    node_network_transmit_errs_total{device="eth0"}
+
+
+3. Установите в свою виртуальную машину Netdata. Воспользуйтесь готовыми пакетами для установки (sudo apt install -y netdata). После успешной установки:
+
+    в конфигурационном файле /etc/netdata/netdata.conf в секции [web] замените значение с localhost на bind to = 0.0.0.0,
+    добавьте в Vagrantfile проброс порта Netdata на свой локальный компьютер и сделайте vagrant reload:
+
+config.vm.network "forwarded_port", guest: 19999, host: 19999
+
+После успешной перезагрузки в браузере на своем ПК (не в виртуальной машине) вы должны суметь зайти на localhost:19999. Ознакомьтесь с метриками, которые по умолчанию собираются Netdata и с комментариями, которые даны к этим метрикам.  
+Ответ:  
+![](../Изображения/Снимок экрана от 2022-01-25 17-44-58.png)
+4. Можно ли по выводу dmesg понять, осознает ли ОС, что загружена не на настоящем оборудовании, а на системе виртуализации?  
+Ответ:  
+Судя по выводу dmesg да, причем даже тип ВМ, так как есть соответсвующая строка: 
+
+    agrant@vagrant:~$ dmesg |grep virtualiz
+[    0.002836] CPU MTRRs all blank - virtualized system.
+[    0.074550] Booting paravirtualized kernel on KVM
+[    4.908209] systemd[1]: Detected virtualization oracle.
+
+
+5. Как настроен sysctl fs.nr_open на системе по-умолчанию? Узнайте, что означает этот параметр. Какой другой существующий лимит не позволит достичь такого числа (ulimit --help)?  
+Ответ:  
+vagrant@vagrant:~$ /sbin/sysctl -n fs.nr_open
+1048576
+
+
+Это максимальное число открытых дескрипторов для ядра (системы), для пользователя задать больше этого числа нельзя (если не менять). 
+Число задается кратное 1024, в данном случае =1024*1024. 
+
+Но макс.предел ОС можно посмотреть так :
+
+vagrant@vagrant:~$ cat /proc/sys/fs/file-max
+9223372036854775807
+
+
+
+vagrant@vagrant:~$ ulimit -Sn
+1024
+
+
+мягкий лимит (так же ulimit -n)на пользователя (может быть увеличен процессов в процессе работы)
+
+vagrant@vagrant:~$ ulimit -Hn
+1048576
+
+
+жесткий лимит на пользователя (не может быть увеличен, только уменьшен)
+
+Оба ulimit -n НЕ могут превысить системный fs.nr_open  
+
+6. Запустите любой долгоживущий процесс (не ls, который отработает мгновенно, а, например, sleep 1h) в отдельном неймспейсе процессов; покажите, что ваш процесс работает под PID 1 через nsenter. Для простоты работайте в данном задании под root (sudo -i). Под обычным пользователем требуются дополнительные опции (--map-root-user) и т.д.  
+Ответ:  
+root@vagrant:~# ps -e |grep sleep
+   2020 pts/2    00:00:00 sleep
+root@vagrant:~# nsenter --target 2020 --pid --mount
+root@vagrant:/# ps
+    PID TTY          TIME CMD
+      2 pts/0    00:00:00 bash
+     11 pts/0    00:00:00 ps  
+7. Найдите информацию о том, что такое :(){ :|:& };:. Запустите эту команду в своей виртуальной машине Vagrant с Ubuntu 20.04 (это важно, поведение в других ОС не проверялось). Н екоторое время все будет "плохо", после чего (минуты) – ОС должна стабилизироваться. Вызов dmesg расскажет, какой механизм помог автоматической стабилизации. Как настроен этот механизм по-умолчанию, и как изменить число процессов, которое можно создать в сессии?  
+Ответ: 
+эта команда является логической бомбой. Она оперирует определением функции с именем ‘:‘, которая вызывает сама себя дважды: один раз на переднем плане и один раз в фоне. Она продолжает своё выполнение снова и снова, пока система не зависнет.  
+[ 3099.973235] cgroup: fork rejected by pids controller in /user.slice/user-1000.slice/session-4.scope
+[ 3103.171819] cgroup: fork rejected by pids controller in /user.slice/user-1000.slice/session-11.scope
+
+
+Судя по всему, система на основании этих файлов в пользовательской зоне ресурсов имеет определенное ограничение на создаваемые ресурсы 
+   
