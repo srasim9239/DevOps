@@ -63,8 +63,12 @@ INVOCATION_ID=0fcb24d52895405c875cbb9cbc28d3ffJOURNAL_STREAM=9:35758MYVAR=some_v
 
 Дополнение:
 Передача доп опций  
-![Снимок экрана от 2022-01-31 14-08-15](https://user-images.githubusercontent.com/26147777/151783486-8ff511f9-7779-4260-8c5d-6b59eca45192.png)
-![Снимок экрана от 2022-01-31 14-08-43](https://user-images.githubusercontent.com/26147777/151783494-5ba58f72-1f63-45ae-b744-7296ab82c230.png)
+
+![Снимок экрана от 2022-01-31 14-53-24](https://user-images.githubusercontent.com/26147777/151789452-f05c29b0-312a-40af-bbd5-5e2f3524c5c3.png)  
+![Снимок экрана от 2022-01-31 14-52-50](https://user-images.githubusercontent.com/26147777/151789466-fd3493a4-583c-4995-8a75-fc00bad0ab04.png)  
+![Снимок экрана от 2022-01-31 14-53-37](https://user-images.githubusercontent.com/26147777/151789469-0c0a4b89-d9ba-4935-bacb-dd7ab27e2ab5.png)
+
+
 
 
 2. Ознакомьтесь с опциями node_exporter и выводом /metrics по-умолчанию. Приведите несколько опций, которые вы бы выбрали для базового мониторинга хоста по CPU, памяти, диску и сети.   
