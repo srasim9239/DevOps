@@ -62,7 +62,7 @@ LANG=en_US.UTF-8LANGUAGE=en_US:PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/us
 INVOCATION_ID=0fcb24d52895405c875cbb9cbc28d3ffJOURNAL_STREAM=9:35758MYVAR=some_value  
 
 Дополнение:
-Передача доп опций
+Передача доп опций  
 ![Снимок экрана от 2022-01-31 14-08-15](https://user-images.githubusercontent.com/26147777/151783486-8ff511f9-7779-4260-8c5d-6b59eca45192.png)
 ![Снимок экрана от 2022-01-31 14-08-43](https://user-images.githubusercontent.com/26147777/151783494-5ba58f72-1f63-45ae-b744-7296ab82c230.png)
 
