@@ -1,167 +1,124 @@
 ## Домашнее задание по курсу "DevOps"
-Домашнее задание к занятию "3.4. Операционные системы, лекция 2"
+# Домашнее задание к занятию "3.5. Файловые системы"
 
-
-1. На лекции мы познакомились с node_exporter. В демонстрации его исполняемый файл запускался в background. Этого достаточно для демо, но не для настоящей production-системы, где процессы должны находиться под внешним управлением. Используя знания из лекции по systemd, создайте самостоятельно простой unit-файл для node_exporter:
-
-    поместите его в автозагрузку,
-    предусмотрите возможность добавления опций к запускаемому процессу через внешний файл (посмотрите, например, на systemctl cat cron),
-    удостоверьтесь, что с помощью systemctl процесс корректно стартует, завершается, а после перезагрузки автоматически поднимается.
-  
+1. Узнайте о [sparse](https://ru.wikipedia.org/wiki/%D0%A0%D0%B0%D0%B7%D1%80%D0%B5%D0%B6%D1%91%D0%BD%D0%BD%D1%8B%D0%B9_%D1%84%D0%B0%D0%B9%D0%BB) (разряженных) файлах.  
 Ответ:  
-![Снимок экрана от 2022-01-25 17-18-41](https://user-images.githubusercontent.com/26147777/151385011-cb02a689-bf6a-4bf3-8d3c-7be1465aee5d.png)
+Изучил, стало понятнее как работает Torrent и подобные системы  
 
-Сервис стартует и перезапускается корректно
+1. Могут ли файлы, являющиеся жесткой ссылкой на один объект, иметь разные права доступа и владельца? Почему?  
+Ответ:  
+Не могут, т.к. hardlink это ссылка на тот же самый файл и имеет тот же inode, значит права будут одни.
+Проверяем...
+![Снимок экрана от 2022-02-02 14-36-06](https://user-images.githubusercontent.com/26147777/152146492-3e397606-fb11-4333-a84b-1680a09c7059.png)
 
-1.Проверка после перезапуска работы процесса
-2. Остановка
-3. Проверка работы процесса
-4. Запуск процесса 
-5. Проверка работы процесса
+
+1. Сделайте `vagrant destroy` на имеющийся инстанс Ubuntu. Замените содержимое Vagrantfile следующим:
+
+    ```bash![Uploading Снимок экрана от 2022-02-02 14-36-06.png…]()
+
+    Vagrant.configure("2") do |config|
+      config.vm.box = "bento/ubuntu-20.04"
+      config.vm.provider :virtualbox do |vb|
+        lvm_experiments_disk0_path = "/tmp/lvm_experiments_disk0.vmdk"
+        lvm_experiments_disk1_path = "/tmp/lvm_experiments_disk1.vmdk"
+        vb.customize ['createmedium', '--filename', lvm_experiments_disk0_path, '--size', 2560]
+        vb.customize ['createmedium', '--filename', lvm_experiments_disk1_path, '--size', 2560]
+        vb.customize ['storageattach', :id, '--storagectl', 'SATA Controller', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', lvm_experiments_disk0_path]
+        vb.customize ['storageattach', :id, '--storagectl', 'SATA Controller', '--port', 2, '--device', 0, '--type', 'hdd', '--medium', lvm_experiments_disk1_path]
+      end
+    end
+    ```
+
+    Данная конфигурация создаст новую виртуальную машину с двумя дополнительными неразмеченными дисками по 2.5 Гб.  
+Ответ:  
+![Снимок экрана от 2022-02-02 14-44-04](https://user-images.githubusercontent.com/26147777/152147627-b2dfdaf4-6267-4926-9584-0b00fba4d0c7.png)
+
+
+1. Используя `fdisk`, разбейте первый диск на 2 раздела: 2 Гб, оставшееся пространство.  
+Ответ:  
+![Снимок экрана от 2022-02-02 15-28-24](https://user-images.githubusercontent.com/26147777/152153732-7266e46e-8cb4-4de7-8ce0-eca130b0c860.png)
+
+
+1. Используя `sfdisk`, перенесите данную таблицу разделов на второй диск.  
+Ответ:  
+![Снимок экрана от 2022-02-02 15-34-54](https://user-images.githubusercontent.com/26147777/152154660-4113cb3f-7557-4dce-992e-87bf029996ea.png)
+
+
+1. Соберите `mdadm` RAID1 на паре разделов 2 Гб.  
+Ответ:  
+sudo mdadm --create /dev/md0 --level=1 --raid-devices=2 /dev/sdb1 /dev/sdc1
+![Снимок экрана от 2022-02-02 15-51-13](https://user-images.githubusercontent.com/26147777/152157334-1c4b7c1d-a68e-400b-8b89-0104528a57ac.png)
+
+1. Соберите `mdadm` RAID0 на второй паре маленьких разделов.  
+Ответ:  
+sudo mdadm --create /dev/md1 --level=0 --raid-devices=2 /dev/sdb2 /dev/sdc2
+![Снимок экрана от 2022-02-02 15-52-39](https://user-images.githubusercontent.com/26147777/152157483-7a494623-393a-46f0-946b-c6bdce1e745b.png)
+
+1. Создайте 2 независимых PV на получившихся md-устройствах.  
+Ответ:  
+![Снимок экрана от 2022-02-02 15-55-55](https://user-images.githubusercontent.com/26147777/152158082-7b506549-91b6-45b2-aae0-3f1f7de01b3a.png)
+
+1. Создайте общую volume-group на этих двух PV.  
+Ответ:  
+![Снимок экрана от 2022-02-02 16-08-15](https://user-images.githubusercontent.com/26147777/152159863-d7c4b970-75ce-4a63-9d78-9d0ce32851f8.png)
+
+1. Создайте LV размером 100 Мб, указав его расположение на PV с RAID0.  
+Ответ:  
+![Снимок экрана от 2022-02-02 16-13-28](https://user-images.githubusercontent.com/26147777/152160543-826579bd-d6dd-4a99-a5d3-e27cf077a702.png)
+
+1. Создайте `mkfs.ext4` ФС на получившемся LV.  
+Ответ:  
+![Снимок экрана от 2022-02-02 16-14-52](https://user-images.githubusercontent.com/26147777/152160769-4cb1cffe-6d11-4965-b2c0-57df63a98bb4.png)
+
+1. Смонтируйте этот раздел в любую директорию, например, `/tmp/new`.  
+Ответ:  
+![Снимок экрана от 2022-02-02 16-16-51](https://user-images.githubusercontent.com/26147777/152161082-e244bdf4-1dff-4c1c-a639-41072c19d7ea.png)
+
+1. Поместите туда тестовый файл, например `wget https://mirror.yandex.ru/ubuntu/ls-lR.gz -O /tmp/new/test.gz`.  
+Ответ:  
+![Снимок экрана от 2022-02-02 16-17-52](https://user-images.githubusercontent.com/26147777/152161223-de122478-dd96-45a1-96f2-f32e76fd39ca.png)
+
+1. Прикрепите вывод `lsblk`.  
+Ответ:  
+![Снимок экрана от 2022-02-02 16-19-56](https://user-images.githubusercontent.com/26147777/152161629-4de26bed-fe8f-4c17-b6ad-84cb45bd6a4b.png)
+
+1. Протестируйте целостность файла:  
+
+    ```bash
+    root@vagrant:~# gzip -t /tmp/new/test.gz
+    root@vagrant:~# echo $?
+    0
+    ```  
+Ответ:  
+![Снимок экрана от 2022-02-02 16-21-19](https://user-images.githubusercontent.com/26147777/152161795-f775453f-eea3-4f13-9809-d0741356eace.png)
+
+
+1. Используя pvmove, переместите содержимое PV с RAID0 на RAID1.  
+Ответ:  
+![Снимок экрана от 2022-02-02 16-23-59](https://user-images.githubusercontent.com/26147777/152162272-207d1b51-a034-437e-b9c6-4546d9296ce2.png)
+
+1. Сделайте `--fail` на устройство в вашем RAID1 md.  
+Ответ:  
+dadm /dev/md0 --fail /dev/sdb1
+![Снимок экрана от 2022-02-02 16-29-41](https://user-images.githubusercontent.com/26147777/152163194-63563162-777b-4924-9834-5081a1461164.png)
+
+1. Подтвердите выводом `dmesg`, что RAID1 работает в деградированном состоянии.  
+Ответ:  
+![Снимок экрана от 2022-02-02 16-31-15](https://user-images.githubusercontent.com/26147777/152163348-89b8f314-cc95-4368-ad05-0b48dd1d33fc.png)
+
+
+1. Протестируйте целостность файла, несмотря на "сбойный" диск он должен продолжать быть доступен:
+
+    ```bash
+    root@vagrant:~# gzip -t /tmp/new/test.gz
+    root@vagrant:~# echo $?
+    0
+    ```  
+Ответ:  
+![Снимок экрана от 2022-02-02 16-31-58](https://user-images.githubusercontent.com/26147777/152163458-abb2e6f4-baa8-4b10-95cb-f60f37ee7a3c.png)
  
-vagrant@vagrant:~$ ps -e |grep node_exporter   
-   1375 ?        00:00:00 node_exporter  
-vagrant@vagrant:~$ systemctl stop node_exporter  
-==== AUTHENTICATING FOR org.freedesktop.systemd1.manage-units ===  
-Authentication is required to stop 'node_exporter.service'.  
-Authenticating as: vagrant,,, (vagrant)  
-Password:   
-==== AUTHENTICATION COMPLETE ===  
-vagrant@vagrant:~$ ps -e |grep node_exporter  
-vagrant@vagrant:~$ systemctl start node_exporter  
-==== AUTHENTICATING FOR org.freedesktop.systemd1.manage-units ===  
-Authentication is required to start 'node_exporter.service'.  
-Authenticating as: vagrant,,, (vagrant)  
-Password:   
-==== AUTHENTICATION COMPLETE ===  
-vagrant@vagrant:~$ ps -e |grep node_exporter  
-   1420 ?        00:00:00 node_exporter  
-vagrant@vagrant:~$   
 
+1. Погасите тестовый хост, `vagrant destroy`.  
 
-
-Прописан конфигруационный файл:  
-
-vagrant@vagrant:/etc/systemd/system$ cat /etc/systemd/system/node_exporter.service  
-[Unit]  
-Description=Node Exporter  
-  
-[Service]  
-ExecStart=/opt/node_exporter/node_exporter  
-EnvironmentFile=/etc/default/node_exporter  
- 
-[Install]  
-WantedBy=default.target  
-
-
-
-при перезапуске переменная окружения выставляется :  
-
-agrant@vagrant:/etc/systemd/system$ sudo cat /proc/1809/environ
-LANG=en_US.UTF-8LANGUAGE=en_US:PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin
-INVOCATION_ID=0fcb24d52895405c875cbb9cbc28d3ffJOURNAL_STREAM=9:35758MYVAR=some_value  
-
-Дополнение:
-Передача доп опций  
-
-![Снимок экрана от 2022-01-31 14-53-24](https://user-images.githubusercontent.com/26147777/151789452-f05c29b0-312a-40af-bbd5-5e2f3524c5c3.png)  
-![Снимок экрана от 2022-01-31 14-52-50](https://user-images.githubusercontent.com/26147777/151789466-fd3493a4-583c-4995-8a75-fc00bad0ab04.png)  
-![Снимок экрана от 2022-01-31 14-53-37](https://user-images.githubusercontent.com/26147777/151789469-0c0a4b89-d9ba-4935-bacb-dd7ab27e2ab5.png)
-
-
-
-
-2. Ознакомьтесь с опциями node_exporter и выводом /metrics по-умолчанию. Приведите несколько опций, которые вы бы выбрали для базового мониторинга хоста по CPU, памяти, диску и сети.   
 Ответ:  
-CPU:
-    node_cpu_seconds_total{cpu="0",mode="idle"} 2238.49
-    node_cpu_seconds_total{cpu="0",mode="system"} 16.72
-    node_cpu_seconds_total{cpu="0",mode="user"} 6.86
-    process_cpu_seconds_total
-    
-Memory:
-    node_memory_MemAvailable_bytes 
-    node_memory_MemFree_bytes
-    
-Disk(если несколько дисков то для каждого):
-    node_disk_io_time_seconds_total{device="sda"} 
-    node_disk_read_bytes_total{device="sda"} 
-    node_disk_read_time_seconds_total{device="sda"} 
-    node_disk_write_time_seconds_total{device="sda"}
-    
-Network(так же для каждого активного адаптера):
-    node_network_receive_errs_total{device="eth0"} 
-    node_network_receive_bytes_total{device="eth0"} 
-    node_network_transmit_bytes_total{device="eth0"}
-    node_network_transmit_errs_total{device="eth0"}
-
-
-3. Установите в свою виртуальную машину Netdata. Воспользуйтесь готовыми пакетами для установки (sudo apt install -y netdata). После успешной установки:
-
-    в конфигурационном файле /etc/netdata/netdata.conf в секции [web] замените значение с localhost на bind to = 0.0.0.0,
-    добавьте в Vagrantfile проброс порта Netdata на свой локальный компьютер и сделайте vagrant reload:
-
-config.vm.network "forwarded_port", guest: 19999, host: 19999
-
-После успешной перезагрузки в браузере на своем ПК (не в виртуальной машине) вы должны суметь зайти на localhost:19999. Ознакомьтесь с метриками, которые по умолчанию собираются Netdata и с комментариями, которые даны к этим метрикам.  
-Ответ:  
-![Снимок экрана от 2022-01-25 17-44-58](https://user-images.githubusercontent.com/26147777/151385299-db90f454-33a5-4940-ad67-96ba04e888de.png)
-
-4. Можно ли по выводу dmesg понять, осознает ли ОС, что загружена не на настоящем оборудовании, а на системе виртуализации?  
-Ответ:  
-Судя по выводу dmesg да, причем даже тип ВМ, так как есть соответсвующая строка: 
-
-    agrant@vagrant:~$ dmesg |grep virtualiz
-[    0.002836] CPU MTRRs all blank - virtualized system.
-[    0.074550] Booting paravirtualized kernel on KVM
-[    4.908209] systemd[1]: Detected virtualization oracle.
-
-
-5. Как настроен sysctl fs.nr_open на системе по-умолчанию? Узнайте, что означает этот параметр. Какой другой существующий лимит не позволит достичь такого числа (ulimit --help)?  
-Ответ:  
-vagrant@vagrant:~$ /sbin/sysctl -n fs.nr_open
-1048576
-
-
-Это максимальное число открытых дескрипторов для ядра (системы), для пользователя задать больше этого числа нельзя (если не менять). 
-Число задается кратное 1024, в данном случае =1024*1024. 
-
-Но макс.предел ОС можно посмотреть так :
-
-vagrant@vagrant:~$ cat /proc/sys/fs/file-max
-9223372036854775807
-
-
-
-vagrant@vagrant:~$ ulimit -Sn
-1024
-
-
-мягкий лимит (так же ulimit -n)на пользователя (может быть увеличен процессов в процессе работы)
-
-vagrant@vagrant:~$ ulimit -Hn
-1048576
-
-
-жесткий лимит на пользователя (не может быть увеличен, только уменьшен)
-
-Оба ulimit -n НЕ могут превысить системный fs.nr_open  
-
-6. Запустите любой долгоживущий процесс (не ls, который отработает мгновенно, а, например, sleep 1h) в отдельном неймспейсе процессов; покажите, что ваш процесс работает под PID 1 через nsenter. Для простоты работайте в данном задании под root (sudo -i). Под обычным пользователем требуются дополнительные опции (--map-root-user) и т.д.  
-Ответ:  
-root@vagrant:~# ps -e |grep sleep
-   2020 pts/2    00:00:00 sleep
-root@vagrant:~# nsenter --target 2020 --pid --mount
-root@vagrant:/# ps
-    PID TTY          TIME CMD
-      2 pts/0    00:00:00 bash
-     11 pts/0    00:00:00 ps  
-7. Найдите информацию о том, что такое :(){ :|:& };:. Запустите эту команду в своей виртуальной машине Vagrant с Ubuntu 20.04 (это важно, поведение в других ОС не проверялось). Н екоторое время все будет "плохо", после чего (минуты) – ОС должна стабилизироваться. Вызов dmesg расскажет, какой механизм помог автоматической стабилизации. Как настроен этот механизм по-умолчанию, и как изменить число процессов, которое можно создать в сессии?  
-Ответ: 
-эта команда является логической бомбой. Она оперирует определением функции с именем ‘:‘, которая вызывает сама себя дважды: один раз на переднем плане и один раз в фоне. Она продолжает своё выполнение снова и снова, пока система не зависнет.  
-[ 3099.973235] cgroup: fork rejected by pids controller in /user.slice/user-1000.slice/session-4.scope
-[ 3103.171819] cgroup: fork rejected by pids controller in /user.slice/user-1000.slice/session-11.scope
-
-
-Судя по всему, система на основании этих файлов в пользовательской зоне ресурсов имеет определенное ограничение на создаваемые ресурсы 
-   
+![Снимок экрана от 2022-02-02 16-33-18](https://user-images.githubusercontent.com/26147777/152163681-3af80aca-3a98-44ca-9fb9-8eb46d227d21.png)
