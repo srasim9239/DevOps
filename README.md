@@ -104,9 +104,7 @@ dadm /dev/md0 --fail /dev/sdb1
 
 1. Подтвердите выводом `dmesg`, что RAID1 работает в деградированном состоянии.  
 Ответ:  
-![Снимок экрана от 2022-02-02 16-31-15](https://user-images.githubusercontent.com/26147777/152163348-89b8f314-cc95-4368-ad05-0b48dd1d33fc.png)
-
-
+![Снимок экрана от 2022-02-02 16-31-15](https://user-images.githubusercontent.com/26147777/152163348-89b8f314-cc95-4368-ad05-0b48dd1d33fc.png)  
 1. Протестируйте целостность файла, несмотря на "сбойный" диск он должен продолжать быть доступен:
 
     ```bash
@@ -115,8 +113,7 @@ dadm /dev/md0 --fail /dev/sdb1
     0
     ```  
 Ответ:  
-![Снимок экрана от 2022-02-02 16-31-58](https://user-images.githubusercontent.com/26147777/152163458-abb2e6f4-baa8-4b10-95cb-f60f37ee7a3c.png)
- 
+![Снимок экрана от 2022-02-02 16-31-58](https://user-images.githubusercontent.com/26147777/152163458-abb2e6f4-baa8-4b10-95cb-f60f37ee7a3c.png)  
 
 1. Погасите тестовый хост, `vagrant destroy`.  
 
