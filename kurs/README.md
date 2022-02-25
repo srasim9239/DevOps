@@ -9,6 +9,7 @@ sudo ufw allow 443
 sudo ufw allow from 127.0.0.1
 sudo ufw default deny incoming
 sudo ufw enable
+```
 ![Снимок экрана от 2022-02-24 13-40-54](https://user-images.githubusercontent.com/26147777/155687961-59c7164f-9fd5-4ec8-b1a6-45654953cb9d.png)  
 
 - Процесс установки и выпуска сертификата с помощью hashicorp vault  
