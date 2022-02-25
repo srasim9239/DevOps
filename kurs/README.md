@@ -13,8 +13,13 @@
 
 - Процесс установки и настройки сервера nginx  
 ```
-sudo apt-get install nginx  
+sudo apt-get install nginx 
+
 ```
+Правим хост файл
+![Снимок экрана от 2022-02-25 09-51-16](https://user-images.githubusercontent.com/26147777/155709363-3eb1d84d-01c0-4e24-8d15-961e625f4da9.png)
+
+
 - Страница сервера nginx в браузере хоста не содержит предупреждений  
 Добавляем корневой сертификат в доверенные.   
 ![Снимок экрана от 2022-02-25 09-51-53](https://user-images.githubusercontent.com/26147777/155695017-02e138de-b1c2-44d7-9841-04d0e807be7b.png)
@@ -35,3 +40,5 @@ Running hooks in /etc/ca-certificates/update.d...
 done.
 ```
 - Crontab работает (выберите число и время так, чтобы показать что crontab запускается и делает что надо)
+![Снимок экрана от 2022-02-25 14-35-30](https://user-images.githubusercontent.com/26147777/155709217-a363721d-0230-4e5d-9c1a-8c90319cc4f7.png)
+![Снимок экрана от 2022-02-25 14-37-10](https://user-images.githubusercontent.com/26147777/155709228-c1720d58-891c-4e0c-9a67-e480831c2e77.png)
