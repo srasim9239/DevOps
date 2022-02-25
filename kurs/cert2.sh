@@ -1,11 +1,6 @@
 #!/bin/bash
 
-# 720h = 30 дней
-# 8760h = 1 год
-# 43800h = 5 лет
-# cert: 87600h = 10 лет
-# int: 175200h = 20 лет
-# root: 262800h = 30 лет
+
 export VAULT_ADDR=http://127.0.0.1:8200
 export VAULT_TOKEN=root
 # enable Vault PKI secret
@@ -45,6 +40,7 @@ vault write -format=json pki_int/issue/example-dot-com \
   ttl="720h" > vault.example.com.crt
 vault secrets disable pki
 vault secrets disable pki_int
+
 # save cert
 cat vault.example.com.crt | jq -r .data.certificate > vault.example.com.crt.pem
 cat vault.example.com.crt | jq -r .data.issuing_ca >> vault.example.com.crt.pem
