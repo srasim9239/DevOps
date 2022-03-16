@@ -60,10 +60,10 @@ timeout=5
 for i in {1..5}
 do
 date >>hosts.log
-    for h in ${hosts[@]}
+    for h in ${hosts[@]} 
     do
 	curl -Is --connect-timeout $timeout $hosts:80 >/dev/null
-        echo "    check" $h status=$? >>hosts.log
+        echo " -check " $h status=$? >>hosts.log
     done
 done
 ```
@@ -79,7 +79,7 @@ res=0 #переменная для записи результата курла
 
 while (($res == 0))
 do
-    for h in ${hosts[@]} #переменная h для перебора адресов в списке hosts
+    for h in ${hosts[@]}
     do
 	curl -Is --connect-timeout $timeout $h:80 >/dev/null
 	res=$?
