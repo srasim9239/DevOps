@@ -54,7 +54,12 @@ for result in result_os.split('\n'):
 
 ### Вывод скрипта при запуске при тестировании:
 ```
-???
+При изменении 2х файлов в репозитории
+/usr/bin/python3.8 /home/ras/DevOps/1.py
+   branching/rebase.sh
+   kurs/README.md
+
+Process finished with exit code 0
 ```
 
 ## Обязательная задача 3
@@ -62,12 +67,50 @@ for result in result_os.split('\n'):
 
 ### Ваш скрипт:
 ```python
-???
+#!/usr/bin/env python3
+import os
+import sys
+
+cmd = os.getcwd()
+
+if len(sys.argv)>=2:
+    cmd = sys.argv[1]
+bash_command = ["cd "+cmd, "git status 2>&1"]
+
+print('\033[31m')
+result_os = os.popen(' && '.join(bash_command)).read()
+#is_change = False
+for result in result_os.split('\n'):
+    if result.find('fatal') != -1:
+        print('\033[31m Каталог \033[1m '+cmd+'\033[0m\033[31m не является GIT репозиторием\033[0m')    
+    if result.find('изменено') != -1:
+        prepare_result = result.replace('\tизменено: ', '')
+# добавил замену всех оставшихся пробелов в строке для удобства вывода
+        prepare_result = prepare_result.replace(' ', '') 
+        print(cmd+prepare_result)
+#        break
+print('\033[0m')
 ```
 
 ### Вывод скрипта при запуске при тестировании:
 ```
-???
+ ✘ ⚙ ras@ras-VirtualBox  ~/DevOps   main ±  python3 1.py ~/DevOps
+
+/home/ras/DevOpsbranching/rebase.sh
+/home/ras/DevOpskurs/README.md
+
+ ⚙ ras@ras-VirtualBox  ~/DevOps   main ±  python3 1.py         
+
+/home/ras/DevOpsbranching/rebase.sh
+/home/ras/DevOpskurs/README.md
+
+ ⚙ ras@ras-VirtualBox  ~/DevOps   main ±  cd ..
+ ⚙ ras@ras-VirtualBox  ~  python3 1.py   
+
+ Каталог  /home/ras не является GIT репозиторием
+
+ ⚙ ras@ras-VirtualBox  ~  
+
 ```
 
 ## Обязательная задача 4
@@ -75,24 +118,43 @@ for result in result_os.split('\n'):
 
 ### Ваш скрипт:
 ```python
-???
+#!/usr/bin/env python3
+
+import socket as s
+import time as t
+import datetime as dt
+
+# set variables
+i = 1
+wait = 1 # интервал проверок в секундах
+srv = {'drive.google.com':'0.0.0.0', 'mail.google.com':'0.0.0.0', 'google.com':'0.0.0.0'}
+init=0
+
+print('*** start script ***')
+print(srv)
+print('********************')
+
+while 1==1 : 
+  for host in srv:
+    ip = s.gethostbyname(host)
+    if ip != srv[host]:
+      if i==1 and init !=1:
+        print(str(dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S")) +' [ERROR] ' + str(host) +' IP mistmatch: '+srv[host]+' '+ip)
+      srv[host]=ip
+  t.sleep(wait)
 ```
 
 ### Вывод скрипта при запуске при тестировании:
 ```
-???
+ ⚙ ras@ras-VirtualBox  ~/DevOps   main ±  python3 2.py 
+*** start script ***
+{'drive.google.com': '0.0.0.0', 'mail.google.com': '0.0.0.0', 'google.com': '0.0.0.0'}
+********************
+2022-04-07 17:42:53 [ERROR] drive.google.com IP mistmatch: 0.0.0.0 173.194.73.194
+2022-04-07 17:42:53 [ERROR] mail.google.com IP mistmatch: 0.0.0.0 216.58.209.165
+2022-04-07 17:42:53 [ERROR] google.com IP mistmatch: 0.0.0.0 216.58.209.174
+2022-04-07 17:43:12 [ERROR] mail.google.com IP mistmatch: 216.58.209.165 216.58.209.197
+
+
 ```
 
-## Дополнительное задание (со звездочкой*) - необязательно к выполнению
-
-Так получилось, что мы очень часто вносим правки в конфигурацию своей системы прямо на сервере. Но так как вся наша команда разработки держит файлы конфигурации в github и пользуется gitflow, то нам приходится каждый раз переносить архив с нашими изменениями с сервера на наш локальный компьютер, формировать новую ветку, коммитить в неё изменения, создавать pull request (PR) и только после выполнения Merge мы наконец можем официально подтвердить, что новая конфигурация применена. Мы хотим максимально автоматизировать всю цепочку действий. Для этого нам нужно написать скрипт, который будет в директории с локальным репозиторием обращаться по API к github, создавать PR для вливания текущей выбранной ветки в master с сообщением, которое мы вписываем в первый параметр при обращении к py-файлу (сообщение не может быть пустым). При желании, можно добавить к указанному функционалу создание новой ветки, commit и push в неё изменений конфигурации. С директорией локального репозитория можно делать всё, что угодно. Также, принимаем во внимание, что Merge Conflict у нас отсутствуют и их точно не будет при push, как в свою ветку, так и при слиянии в master. Важно получить конечный результат с созданным PR, в котором применяются наши изменения. 
-
-### Ваш скрипт:
-```python
-???
-```
-
-### Вывод скрипта при запуске при тестировании:
-```
-???
-```
