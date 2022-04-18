@@ -11,13 +11,14 @@
 - Скриншот страницы, как на слайде из презентации (слайд 37).
 
 Ответ:  
+```
 ➜  packer git:(main) ✗ yc compute image list
 +----------------------+---------------+--------+----------------------+--------+
 |          ID          |     NAME      | FAMILY |     PRODUCT IDS      | STATUS |
 +----------------------+---------------+--------+----------------------+--------+
 | fd85skvnsrab53omp3h5 | centos-7-base | centos | f2esd9f5o5i9p7pkkk8k | READY  |
 +----------------------+---------------+--------+----------------------+--------+
-
+```
 
 ## Задача 2
 
@@ -31,7 +32,8 @@
 </p>
 
 Ответ:  
-![Снимок экрана от 2022-04-18 14-56-03](https://user-images.githubusercontent.com/26147777/163804823-0efc7e6c-2a3c-4f20-bda3-4f289582ae0e.png)
+
+![163822556-7b5c2584-829a-4169-95df-3f1f45b27ff4](https://user-images.githubusercontent.com/26147777/163833211-7858203c-c31e-473a-975e-226d43fef6d9.png)
 
 
 ## Задача 3
@@ -44,5 +46,8 @@
   <img width="1200" height="600" src="./assets/yc_02.png">
 </p>
 
-![Снимок экрана от 2022-04-18 16-28-06](https://user-images.githubusercontent.com/26147777/163822556-7b5c2584-829a-4169-95df-3f1f45b27ff4.png)
+Ответ: 
+
+![163804823-0efc7e6c-2a3c-4f20-bda3-4f289582ae0e](https://user-images.githubusercontent.com/26147777/163833191-2c876bca-db17-470b-8ccb-3ffbb09db919.png)
+
 
