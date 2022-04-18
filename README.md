@@ -28,8 +28,8 @@
 - Скриншот страницы свойств созданной ВМ, как на примере ниже:
 
 Ответ:  
+![163804823-0efc7e6c-2a3c-4f20-bda3-4f289582ae0e](https://user-images.githubusercontent.com/26147777/163833191-2c876bca-db17-470b-8ccb-3ffbb09db919.png)
 
-![163822556-7b5c2584-829a-4169-95df-3f1f45b27ff4](https://user-images.githubusercontent.com/26147777/163833211-7858203c-c31e-473a-975e-226d43fef6d9.png)
 
 
 ## Задача 3
@@ -40,7 +40,7 @@
 - Скриншот работающего веб-интерфейса Grafana с текущими метриками, как на примере ниже
 
 Ответ: 
+![163822556-7b5c2584-829a-4169-95df-3f1f45b27ff4](https://user-images.githubusercontent.com/26147777/163833211-7858203c-c31e-473a-975e-226d43fef6d9.png)
 
-![163804823-0efc7e6c-2a3c-4f20-bda3-4f289582ae0e](https://user-images.githubusercontent.com/26147777/163833191-2c876bca-db17-470b-8ccb-3ffbb09db919.png)
 
 
