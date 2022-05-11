@@ -27,7 +27,7 @@ services:
       - backup_postgressql_data:/backup
       - ./config:/docker-entrypoint-initdb.d
     network_mode: "host"
-    ```
+```
 
 ## Задача 2
 
