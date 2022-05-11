@@ -135,7 +135,7 @@ mysql> show profiles;
 2 rows in set, 1 warning (0.00 sec)
 
 mysql> 
-
+```
 ## Задача 4 
 
 Изучите файл `my.cnf` в директории /etc/mysql.
