@@ -7,7 +7,7 @@
 в который будут складываться данные БД и бэкапы.
 
 Приведите получившуюся команду или docker-compose манифест.
-### Ответ
+## Ответ
 ```
 version: "3.3"
 
@@ -56,7 +56,7 @@ services:
 - описание таблиц (describe)
 - SQL-запрос для выдачи списка пользователей с правами над таблицами test_db
 - список пользователей с правами над таблицами test_db  
-# Ответ:  
+## Ответ:  
 ```
 postgres=# \l
                                  List of databases
@@ -179,7 +179,7 @@ postgres-#  WHERE table_name='clients';
 - приведите в ответе:
     - запросы 
     - результаты их выполнения.
-# ОТвет:  
+## ОТвет:  
 ```
 postgres=# SELECT * FROM orders;
  id |  name   | price 
@@ -233,7 +233,7 @@ postgres=#
 Приведите SQL-запрос для выдачи всех пользователей, которые совершили заказ, а также вывод данного запроса.
  
 Подсказк - используйте директиву `UPDATE`.  
-# Ответ:  
+## Ответ:  
 ```
 postgres=# alter table clients add column order_number integer references orders
 postgres-# ;
@@ -271,7 +271,7 @@ postgres=#
 (используя директиву EXPLAIN).
 
 Приведите получившийся результат и объясните что значат полученные значения.  
-Ответ:  
+## Ответ:  
 ```
 postgres=# EXPLAIN (FORMAT YAML) SELECT * FROM clients WHERE order_number IS NOT NULL;
                 QUERY PLAN                
@@ -303,12 +303,12 @@ EXPLAIN - позволяет нам дать служебную информац
 Восстановите БД test_db в новом контейнере.
 
 Приведите список операций, который вы применяли для бэкапа данных и восстановления.   
-# Ответ:  
-# Резервное копирование
+## Ответ:  
+ Резервное копирование
 ```
 root@ras-VirtualBox:/# pg_dumpall -U postgres -W > /backup/backup_"`date +"%d-%m-%Y"`"
 ```
-# Останавливаем докер, удаляем Volume
+ Останавливаем докер, удаляем Volume
 ```
  ✘ ras@ras-VirtualBox  ~/DevOps/06-db-02-sql   main ±  sudo docker-compose down
 Stopping postgressql ... done
@@ -340,11 +340,11 @@ postgres=#
 
 
 ```
-# Восстанавливаем
+ Восстанавливаем
 ```
 root@ras-VirtualBox:/# psql -U postgres -f /backup/backup_11-05-2022 
 ```
-# Проверяем
+ Проверяем
 ```
 postgres=# \l
                                  List of databases
