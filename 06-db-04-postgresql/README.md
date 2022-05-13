@@ -184,5 +184,6 @@ root@d54d453b2116:/var/lib/postgresql/data# pg_dump -U postgres -d test_database
     CREATE INDEX ON orders ((lower(title)));
 
 --- 
-Доработка
+# Доработка 
+
 Если мы хотим, чтобы столбец имел только уникальные значения, то для него можно определить атрибут UNIQUE.
