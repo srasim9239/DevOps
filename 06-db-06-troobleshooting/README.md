@@ -59,3 +59,11 @@ InterfaceError: (InterfaceError) 2013: Lost connection to MySQL server during qu
 ## Ответ:  
 Когда памяти не хватает, вызывается oom-killer и уничтожается процесс PostgreSQL чтобы предотвратить падение всей системы. Для предотвращения сбоев , необходимо увеличить объем ОЗУ или выставить ограничение в настройках PG на использование ресурсов хоста, 
 чтобы исключить потребление всех ресурсов на машине.
+##Доработка
+
+1. Изменение shared_buffers в postgresql.conf.
+2. Использование cgroups.
+3. Использование systemctl set-property postgresql.service MemoryLimit=1024M.
+
+
+
