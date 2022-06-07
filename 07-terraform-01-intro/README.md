@@ -75,22 +75,22 @@ on linux_amd64
 В виде результата этой задачи приложите вывод `--version` двух версий терраформа доступных на вашем компьютере 
 или виртуальной машине.
 ## Решение
-```
- ras@ras-VirtualBox  ~  terraform --version
-Terraform v0.12.29
 
-Your version of Terraform is out of date! The latest version
-is 1.2.2. You can update by downloading from https://www.terraform.io/downloads.html
-```
 Удобно использовать tfswitch
 
 ```
-✘ ras@ras-VirtualBox  ~  tfswitch                   
-✔ 0.13.6
-Installing terraform at /home/ras/bin
-Downloading to: /home/ras/.terraform.versions
-34880158 bytes downloaded
-Switched terraform to version "0.13.6"
+  ras@ras-VirtualBox  ~  sudo tfswitch 0.13.0
+Creating directory for terraform binary at: /root/.terraform.versions
+Downloading to: /root/.terraform.versions
+34851622 bytes downloaded
+Switched terraform to version "0.13.0" 
+ ras@ras-VirtualBox  ~  terraform -v        
+
+Your version of Terraform is out of date! The latest version
+is 1.2.2. You can update by downloading from https://www.terraform.io/downloads.html
+Terraform v0.13.0
+ ras@ras-VirtualBox  ~  
+
 
 ```
 ---
