@@ -59,7 +59,12 @@
 
 Установите терраформ при помощи менеджера пакетов используемого в вашей операционной системе.
 В виде результата этой задачи приложите вывод команды `terraform --version`.
-
+## Решение
+```
+ras@ras-VirtualBox  ~  terraform --version
+Terraform v1.2.2
+on linux_amd64
+```
 ## Задача 3. Поддержка легаси кода. 
 
 В какой-то момент вы обновили терраформ до новой версии, например с 0.12 до 0.13. 
@@ -69,7 +74,25 @@
 
 В виде результата этой задачи приложите вывод `--version` двух версий терраформа доступных на вашем компьютере 
 или виртуальной машине.
+## Решение
+```
+ ras@ras-VirtualBox  ~  terraform --version
+Terraform v0.12.29
 
+Your version of Terraform is out of date! The latest version
+is 1.2.2. You can update by downloading from https://www.terraform.io/downloads.html
+```
+Удобно использовать tfswitch
+
+```
+✘ ras@ras-VirtualBox  ~  tfswitch                   
+✔ 0.13.6
+Installing terraform at /home/ras/bin
+Downloading to: /home/ras/.terraform.versions
+34880158 bytes downloaded
+Switched terraform to version "0.13.6"
+
+```
 ---
 
 ### Как cдавать задание
