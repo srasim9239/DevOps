@@ -19,7 +19,7 @@
     * Какая максимальная длина имени? 
     * Какому регулярному выражению должно подчиняться имя? 
     
-##Ответ
+## Ответ
 resource и data_source:
 1.ResourcesMap: map[string]*schema.Resource
 
