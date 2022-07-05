@@ -63,6 +63,7 @@ package main
 
  ras@ras-VirtualBox  ~/DevOps/07-terraform-05-golang   main ±  go run 2.go
 Min integer:  9
+```
 1. Напишите программу, которая выводит числа от 1 до 100, которые делятся на 3. То есть `(3, 6, 9, …)`.
 
 В виде решения ссылку на код или сам код. 
