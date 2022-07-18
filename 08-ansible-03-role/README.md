@@ -20,6 +20,13 @@
        name: java 
    ```
 2. При помощи `ansible-galaxy` скачать себе эту роль. Запустите  `molecule test`, посмотрите на вывод команды.
+```
+ ras@ras-VirtualBox  ~/DevOps/Playbook   master ±✚  ansible-galaxy install -r requirements.yml --roles-path ./
+Starting galaxy role install process
+- extracting java to /home/ras/DevOps/Playbook/java
+- java (1.0.1) was installed successfully
+
+```
 3. Перейдите в каталог с ролью elastic-role и создайте сценарий тестирования по умолчаню при помощи `molecule init scenario --driver-name docker`.
 4. Добавьте несколько разных дистрибутивов (centos:8, ubuntu:latest) для инстансов и протестируйте роль, исправьте найденные ошибки, если они есть.
 5. Создайте новый каталог с ролью при помощи `molecule init role --driver-name docker kibana-role`. Можете использовать другой драйвер, который более удобен вам.
