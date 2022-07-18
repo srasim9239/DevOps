@@ -2,9 +2,17 @@
 
 ## Основная часть
 1. Приготовьте свой собственный inventory файл `prod.yml`.
-##Ответ
+## Ответ
 ```
-
+---
+      elasticsearch:
+        hosts:
+          elastic:
+            ansible_connection: docker
+      kibana:
+        hosts:
+          kibana:
+            ansible_connection: docker
 ```
 2. Допишите playbook: нужно сделать ещё один play, который устанавливает и настраивает kibana.
 3. При создании tasks рекомендую использовать модули: `get_url`, `template`, `unarchive`, `file`.
