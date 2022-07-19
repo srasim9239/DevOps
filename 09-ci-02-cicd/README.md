@@ -30,30 +30,15 @@
 ### Знакомство с Maven
 
 ```
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org>
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org>
-  <modelVersion>4.0.0</modelVersion>
-
-  <groupId>com.netology.app</groupId>
-  <artifactId>simple-app</artifactId>
-  <version>1.0-SNAPSHOT</version>
-   <repositories>
-    <repository>
-      <id>my-repo</id>
-      <name>maven-public</name>
-      <url>http://localhost:8081/repository/maven-public/</url>
-    </repository>
-  </repositories>
-  <dependencies>
-<!--     <dependency>
-      <groupId>netology</groupId>
-      <artifactId>java</artifactId>
-      <version>8_282</version>
-      <classifier>distrib</classifier>
-      <type>tar.gz</type>
-    </dependency> -->
-  </dependencies>
-</project>
+ ras@ras-VirtualBox  /opt/maven/apache-maven-3.8.6/bin  ls -lha ~/.m2/repository/netology/java/8_282/
+итого 24K
+drwxrwxr-x 2 ras ras 4,0K июл 19 17:03 .
+drwxrwxr-x 3 ras ras 4,0K июл 19 17:03 ..
+-rw-rw-r-- 1 ras ras  802 июл 19 17:03 java-8_282-distrib.tar.gz
+-rw-rw-r-- 1 ras ras   40 июл 19 17:03 java-8_282-distrib.tar.gz.sha1
+-rw-rw-r-- 1 ras ras  386 июл 19 17:03 java-8_282.pom.lastUpdated
+-rw-rw-r-- 1 ras ras  175 июл 19 17:03 _remote.repositories
+ ras@ras-VirtualBox  /opt/maven/apache-maven-3.8.6/bin  
 
 
 ```
